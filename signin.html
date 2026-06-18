@@ -219,28 +219,7 @@ footer p { margin: 0; font-size: 0.95rem; }
 
 <script>
     
-    if (session) {
-      // Remove standard Auth links if already logged in
-      const registerLink = document.getElementById('navRegister');
-      const signInLink = document.getElementById('navSignIn');
-      if (registerLink) registerLink.remove();
-      if (signInLink) signInLink.remove();
 
-      // Append functional Logout link cleanly
-      const authNavList = document.getElementById('authNavList');
-      const logoutItem = document.createElement('li');
-      logoutItem.className = 'nav-item';
-      logoutItem.innerHTML = `<a class="nav-link active" href="#" id="signOutBtn" style="color: #ff704d; font-weight: 600;">Sign Out 🚪</a>`;
-      authNavList.appendChild(logoutItem);
-
-      // Handle sign out button clicks cleanly
-      document.getElementById('signOutBtn').addEventListener('click', async function(e) {
-        e.preventDefault();
-        await supabase.auth.signOut();
-        alert("Signed out successfully.");
-        window.location.reload();
-      });
-    }
   
 
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
