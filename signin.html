@@ -216,13 +216,8 @@ footer p { margin: 0; font-size: 0.95rem; }
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-init.js"></script>
 
 <script>
-  // Dynamic navbar state synchronization based on active user auth status
-  async function syncNavbarAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
     
     if (session) {
       // Remove standard Auth links if already logged in
@@ -246,34 +241,54 @@ footer p { margin: 0; font-size: 0.95rem; }
         window.location.reload();
       });
     }
-  }
+  
 
-  document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); 
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
 
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
+event.preventDefault();
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+const email = document.getElementById('loginEmail').value.trim();
+const password = document.getElementById('loginPassword').value.trim();
 
-      if (error) throw error;
+try {
 
-      if (data.session) {
-        alert("Welcome back to Gourmet Delight! Authentication successful.");
-        window.location.href = "homepage.html"; }
-    } catch (error) {
-      alert("Login Failed: " + error.message);
-      console.error(error);
+    const response = await fetch(
+        "https://supabase-backend-x33v.onrender.com/api/auth/login",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }
+    );
+
+    const token = await response.text();
+
+    console.log("Status:", response.status);
+    console.log("Response:", token);
+
+    if (!response.ok) {
+        throw new Error(token);
     }
-  });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    syncNavbarAuth();
-  });
+    localStorage.setItem("token", token);
+
+    alert("Login Successful!");
+
+    window.location.href = "homepage.html";
+
+} catch(error) {
+
+    alert("Login Failed: " + error.message);
+    console.error(error);
+
+}
+});
+
 </script>
 </body>
 </html>
