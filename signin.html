@@ -272,6 +272,8 @@ footer p { margin: 0; font-size: 0.95rem; }
         );
 
         const token = await response.text();
+        console.log("Response Status:", response.status);
+console.log("Response Text:", token);
 
         if (!response.ok) {
             throw new Error(token);
