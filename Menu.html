@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu - Gourmet Delight</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Poppins', sans-serif; background-color: #fffaf7; color: #333; line-height: 1.6; padding-top: 56px; }
+    .hero { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.55)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2074&auto=format&fit=crop') no-repeat center center/cover; color: white; height: 45vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-radius: 0 0 40px 40px; padding: 2rem; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+    .hero h1 { font-size: 4rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+    .hero p { font-size: 1.4rem; margin-top: 10px; font-style: italic; color: #ffc107; }
+    .section-title { text-align: center; margin: 4rem 0 2.5rem; font-size: 2.2rem; color: #ff704d; font-weight: 700; }
+    .section-title::after { content: ''; width: 70px; height: 3px; background: #ff704d; display: block; margin: 10px auto 0; }
+    .menu-container { max-width: 1140px; margin: 0 auto; padding: 0 15px; }
+    .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 5rem; }
+    .card { display: flex; flex-direction: column; background: linear-gradient(135deg, #ffffff, #ffeec2); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; border: none; }
+    .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.14); }
+    .card img { width: 100%; height: 220px; object-fit: cover; clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); display: block; transition: transform 0.5s ease; }
+    .card:hover img { transform: scale(1.06) rotate(-0.5deg); }
+    .card-body-custom { padding: 1.5rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
+    .card-body-custom h3 { color: #ff704d; font-size: 1.30rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .card-body-custom .price { font-size: 1.2rem; font-weight: 600; color: #333; margin-bottom: 1.2rem; }
+    .btn-add { background: #ffc107; color: #212529; border: none; padding: 0.6rem 2rem; font-size: 1rem; border-radius: 35px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(255,193,7,0.2); transition: 0.3s ease; width: fit-content; margin: 0 auto; }
+    .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255,193,7,0.4); background: #e0a800; }
+    footer { background: #212529; color: #fff; padding: 20px 0; text-align: center; margin-top: auto; }
+    footer p { margin: 0; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="home.html">🍽 Gourmet Delight</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="homepage.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="aboutus.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contactus.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart</a></li>
+          <li class="nav-item"><a class="nav-link active" href="register.html">Register</a></li>
+          <li class="nav-item"><a class="nav-link active" href="signin.html">SignIn</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <h1>Our Menu</h1>
+    <p>Savor exquisite culinary delights crafted just for you.</p>
+  </section>
+
+  <div class="menu-container">
+    <h2 class="section-title">Explore Delicious Dishes</h2>
+    <div class="menu" id="menu"></div>
+  </div>
+
+  <footer>
+    <p>© 2026 Gourmet Delight | All Rights Reserved</p>
+  </footer>
+
+  <script>
+  const menuItems = [
+    {name:"Veg Spring Rolls", price:150, img:"assets/spring rolls.jpeg"},
+    {name:"Paneer Tikka", price:200, img:"assets/panner tikka.jpeg"},
+    {name:"Veg Sushi", price:250, img:"assets/sushi.jpeg"},
+    {name:"Veg Ramen", price:200, img:"assets/Veg Ramen.jpeg"},
+    {name:"Kimchi Fried Rice", price:180, img:"assets/Kimchi Fried Rice.jpeg"},
+    {name:"Chocolate Lava Cake", price:120, img:"assets/Chocolate Lava Cake.jpeg"}
+  ];
+
+  const menu = document.getElementById("menu");
+
+  function renderMenu(){
+    menu.innerHTML="";
+    menuItems.forEach(item=>{
+      const div=document.createElement("div");
+      div.className="card";
+      div.innerHTML=`
+        <img src="${item.img}" alt="${item.name}">
+        <div class="card-body-custom">
+          <div>
+            <h3>${item.name}</h3>
+            <p class="price">₹${item.price}</p>
+          </div>
+          <button class="btn-add" onclick='addToCart(${JSON.stringify(item)})'>Add to Cart</button>
+        </div>
+      `;
+      menu.appendChild(div);
+    });
+  }
+
+function addToCart(item){
+    // This strips the '₹' symbol and converts the price to a clean number
+    const cleanPrice = parseFloat(item.price.toString().replace(/[^0-9.]/g, ''));
+    
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let existing = cart.find(i => i.name === item.name);
+
+    if(existing){
+      existing.qty += 1;
+    } else {
+      cart.push({
+        ...item, 
+        price: cleanPrice, 
+        qty: 1
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(item.name + " added to your cart!");
+  }
+
+  renderMenu();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-init.js"></script>
+</body>
+</html>

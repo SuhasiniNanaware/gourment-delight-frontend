@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - Gourmet Delight</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+  background:#fffaf7; 
+  color:#333;
+  padding-top: 56px; 
+}
+
+.container-main{
+  display:flex;min-height:calc(100vh - 56px - 64px);overflow:hidden;
+}
+
+.left{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.55)),
+              url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+  color:white;padding:3rem;position:relative;text-align:center;
+}
+.left::before{
+  content:"";position:absolute;top:0;left:0;width:100%;height:100%;
+  background:url("https://www.transparenttextures.com/patterns/food.png");
+  opacity:0.1;z-index:0;
+}
+.left h2{
+  font-size:2.8rem;
+  font-weight:700;
+  margin-bottom:1rem;
+  z-index:1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+}
+.left p{
+  font-size:1.1rem;
+  max-width:350px;
+  color: #ffc107; 
+  font-style: italic;
+  z-index:1;
+}
+.left img{
+  max-width:75%;border-radius:25px;margin-top:2rem;
+  box-shadow:0 20px 50px rgba(0,0,0,0.3);z-index:1;
+  transition:0.4s ease;
+}
+.left img:hover{transform:scale(1.05);}
+
+.right{
+  flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;
+  background:#fffaf7;position:relative;
+}
+.form-card{
+  background: #ffffff;
+  padding: 3rem 2.5rem;
+  border-radius: 30px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+  border: 1px solid #ffe6cc; 
+  max-width: 420px;
+  width: 100%;
+}
+.form-card h2{
+  font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center;
+  color: #ff704d; 
+}
+
+/* Input Groups */
+.form-group{position:relative;margin-bottom:1.8rem;}
+.form-group input{
+  width:100%;padding:0.9rem 1rem;border:1px solid #ffe6cc;border-radius:12px;
+  font-size:1rem;outline:none;background:#fafafa;transition:0.3s;
+}
+.form-group input:focus{
+  border-color:#ff704d;background:#fff;box-shadow:0 0 8px rgba(255,112,77,0.25);
+}
+.form-group label{
+  position:absolute;top:50%;left:1rem;transform:translateY(-50%);
+  background:#fff;padding:0 0.3rem;color:#aaa;font-size:0.95rem;
+  pointer-events:none;transition:0.3s;
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label{
+  top:-10px;left:0.8rem;font-size:0.8rem;color:#ff704d;
+}
+
+/* Button Styling matches interactive elements */
+button{
+  width:100%;padding:0.9rem;border:none;border-radius:30px;
+  background: #ffc107; 
+  color:#212529;font-size:1rem;font-weight:600;cursor:pointer;transition:0.3s;
+  box-shadow: 0 4px 12px rgba(255,193,7,0.2);
+}
+button:hover{
+  background: #e0a800;
+  transform:translateY(-2px);
+  box-shadow:0 6px 15px rgba(224,168,0,0.3);
+}
+
+.signin-redirect{margin-top:1.2rem;text-align:center;font-size:0.9rem;}
+.signin-redirect a{color:#ff704d;font-weight:600;transition:0.3s;text-decoration: none;}
+.signin-redirect a:hover{color:#e0a800;}
+
+footer {
+  background: #212529;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  width: 100%;
+}
+footer p { margin: 0; font-size: 0.95rem; }
+
+/* Tablets */
+@media(max-width:992px){
+  .container-main{flex-direction:column;}
+  .left,.right{width:100%;padding:2rem;}
+  .left h2{font-size:2.4rem;}
+  .left p{font-size:1rem;}
+  .left img{max-width:60%;}
+  .form-card{max-width:500px;}
+}
+
+/* Large Phones */
+@media(max-width:768px){
+  .left h2{font-size:2rem;}
+  .left p{font-size:0.95rem;}
+  .left img{max-width:70%;margin-top:1.5rem;}
+  .form-card{padding:2rem;}
+  .form-card h2{font-size:1.7rem;}
+  .form-group input{font-size:0.95rem;padding:0.8rem 1rem;}
+  button{font-size:0.95rem;padding:0.8rem;}
+}
+
+/* Small Phones */
+@media(max-width:480px){
+  .left{padding:1.5rem;}
+  .left h2{font-size:1.6rem;}
+  .left p{font-size:0.85rem;}
+  .left img{max-width:80%;margin-top:1rem;}
+  .form-card{padding:1.5rem;border-radius:20px;}
+  .form-card h2{font-size:1.4rem;}
+  .form-group{margin-bottom:1.2rem;}
+  .form-group input{font-size:0.85rem;padding:0.7rem;}
+  button{font-size:0.9rem;padding:0.7rem;}
+}
+</style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="homepage.html">🍽 Gourmet Delight</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" id="authNavList">
+          <li class="nav-item"><a class="nav-link active" href="homepage.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="aboutus.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contactus.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart 🛒</a></li>
+          <li class="nav-item" id="navRegister"><a class="nav-link active" href="register.html">Register</a></li>
+          <li class="nav-item" id="navSignIn"><a class="nav-link active" href="signin.html">SignIn</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="container-main">
+  <div class="left">
+    <h2>Join Gourmet Delight</h2>
+    <p>Create your account and explore multi-cuisine delights from around the globe!</p>
+    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2070&auto=format&fit=crop" alt="Cuisine Illustration">
+  </div>
+
+  <div class="right">
+    <div class="form-card">
+      <h2>Create Account</h2>
+      <form id="registrationForm">
+        <div class="form-group">
+          <input type="text" id="registerName" required placeholder=" ">
+          <label>Full Name</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="registerEmail" required placeholder=" ">
+          <label>Email Address</label>
+        </div>
+        <div class="form-group">
+          <input type="tel" id="registerPhone" required placeholder=" ">
+          <label>Phone Number</label>
+        </div>
+        <div class="form-group">
+          <input type="password" id="registerPassword" required placeholder=" ">
+          <label>Password</label>
+        </div>
+        <div class="form-group">
+          <input type="password" id="confirmPassword" required placeholder=" ">
+          <label>Confirm Password</label>
+        </div>
+        <button type="submit">Register</button>
+      </form>
+      <div class="signin-redirect">
+        Already have an account? <a href="signin.html">Sign In</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Gourmet Delight | All Rights Reserved</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-init.js"></script>
+
+<script>
+  function getSupabaseClient() {
+    if (typeof supabase !== 'undefined') return supabase;
+    if (window.supabase) return window.supabase;
+    return null;
+  }
+
+  async function syncNavbarAuth() {
+    const client = getSupabaseClient();
+    if (!client) return;
+
+    try {
+      const { data: { session } } = await client.auth.getSession();
+      if (session) {
+        const regLink = document.getElementById('navRegister');
+        const signLink = document.getElementById('navSignIn');
+        if (regLink) regLink.remove();
+        if (signLink) signLink.remove();
+
+        const authNavList = document.getElementById('authNavList');
+        const logoutItem = document.createElement('li');
+        logoutItem.className = 'nav-item';
+        logoutItem.innerHTML = `<a class="nav-link active" href="#" id="signOutBtn" style="color: #ff704d; font-weight: 600;">Sign Out 🚪</a>`;
+        authNavList.appendChild(logoutItem);
+
+        document.getElementById('signOutBtn').addEventListener('click', async function(e) {
+          e.preventDefault();
+          await client.auth.signOut();
+          alert("Signed out successfully.");
+          window.location.reload();
+        });
+      }
+    } catch (e) {
+      console.error("Navbar check sync handled: ", e);
+    }
+  }
+
+  document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const client = getSupabaseClient();
+    if (!client) {
+      alert("Registration Error: Supabase connection failed to load properly. Please verify your connection configuration.");
+      return;
+    }
+
+    const fullName = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const phone = document.getElementById('registerPhone').value.trim();
+    const password = document.getElementById('registerPassword').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      // Step 1: Sign up user in Supabase Auth management system
+      const { data: authData, error: authError } = await client.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (authError) throw authError;
+
+      if (authData.user) {
+        // Step 2: Insert data into profiles table matching the updated SQL setup
+        const { error: dbError } = await client
+          .from('profiles')
+          .insert([
+            {
+              id: authData.user.id,
+              full_name: fullName,
+              phone: phone,
+              email: email
+            }
+          ]);
+
+        if (dbError) throw dbError;
+
+        alert("Account registration successful! Redirecting to login page...");
+        window.location.href = "signin.html";
+      }
+    } catch (error) {
+      alert("Registration Error: " + error.message);
+      console.error(error);
+    }
+  });
+
+  window.addEventListener("load", () => {
+    setTimeout(syncNavbarAuth, 100);
+  });
+</script>
+</body>
+</html>

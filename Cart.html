@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart - Gourmet Delight</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  font-family: 'Poppins', sans-serif;
+  background:#fffaf7; 
+  color:#333;
+  line-height:1.6;
+  padding-top: 56px; 
+}
+
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+              url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem); 
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+}
+
+.hero p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem); 
+  font-style: italic;
+  color: #ffc107; 
+  margin-bottom: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 3rem auto 5rem;
+  padding: 0 15px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, #ffffff, #ffeec2); /* Warm canvas gradient */
+  margin-bottom: 1.5rem;
+  padding: 1.2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  border: 1px solid #ffe6cc;
+  transition: transform 0.3s ease;
+}
+
+.item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.item img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.item-details {
+  flex-grow: 1;
+}
+
+.item h3 {
+  color: #ff704d; 
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.item p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.8rem;
+}
+
+button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.qty {
+  background: #ffc107; 
+  color: #212529;
+  box-shadow: 0 3px 8px rgba(255,193,7,0.2);
+}
+
+.qty:hover {
+  background: #e0a800;
+  transform: scale(1.05);
+}
+
+.qty-display {
+  display: inline-block;
+  font-weight: 700;
+  padding: 0 10px;
+  color: #333;
+}
+
+.remove {
+  background: #dc3545; 
+  color: white;
+  margin-top: 0.8rem;
+  padding: 5px 15px;
+  font-size: 0.85rem;
+  box-shadow: 0 3px 8px rgba(220,53,69,0.2);
+}
+
+.remove:hover {
+  background: #bd2130;
+  transform: translateY(-1px);
+}
+
+.summary {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  margin-top: 2rem;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+  border: 1px solid #ffe6cc;
+}
+
+.summary p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.05rem;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+.summary h3 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.6rem;
+  color: #ff704d;
+  font-weight: 700;
+  border-top: 2px dashed #ffe6cc;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.checkout-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, #ff9068, #fd746c); /* Balanced corporate brand gradient */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(253, 116, 108, 0.3);
+  transition: all 0.3s ease;
+}
+
+.checkout-btn:hover {
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(253, 116, 108, 0.4);
+}
+
+.empty-msg {
+  text-align: center;
+  color: #aaa;
+  padding: 3rem 1rem;
+  font-style: italic;
+}
+
+footer {
+  background: #212529;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: auto;
+}
+footer p { margin: 0; font-size: 0.95rem; }
+
+@media(max-width: 576px) {
+  .item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  .item img {
+    width: 100%;
+    height: 140px;
+  }
+}
+</style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container-fluid max-width-container mx-auto" style="max-width:1140px;">
+      <a class="navbar-brand fw-bold" href="homepage.html">🍽 Gourmet Delight</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" id="authNavList">
+          <li class="nav-item"><a class="nav-link active" href="homepage.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="aboutus.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contactus.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart 🛒</a></li>
+          <li class="nav-item" id="navRegister"><a class="nav-link active" href="register.html">Register</a></li>
+          <li class="nav-item" id="navSignIn"><a class="nav-link active" href="signin.html">SignIn</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Your Cart</h1>
+    <p>Review your culinary selections before checkout.</p>
+  </section>
+
+  <div class="container">
+    <div id="cartItems"></div>
+
+    <div class="summary">
+      <p>Subtotal: <span>₹<span id="subtotal">0</span></span></p>
+      <p>Tax (5%): <span>₹<span id="tax">0</span></span></p>
+      <h3>Total: <span>₹<span id="total">0</span></span></h3>
+      
+      <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Gourmet Delight | All Rights Reserved</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-init.js"></script>
+
+  <script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartItems = document.getElementById("cartItems");
+
+  function renderCart(){
+    cartItems.innerHTML="";
+
+    if(cart.length===0){
+      cartItems.innerHTML="<h2 class='empty-msg'>Your cart is looking empty. Let's add some delicious food!</h2>";
+      updateSummary();
+      return;
+    }
+
+    cart.forEach((item,index)=>{
+      const div=document.createElement("div");
+      div.className="item";
+      div.innerHTML=`
+        <img src="${item.img}" alt="${item.name}">
+        <div class="item-details">
+          <h3>${item.name}</h3>
+          <p>₹${item.price}</p>
+          <button class="qty" onclick="changeQty(${index},-1)">-</button>
+          <span class="qty-display">${item.qty}</span>
+          <button class="qty" onclick="changeQty(${index},1)">+</button>
+          <br>
+          <button class="remove" onclick="removeItem(${index})">Remove</button>
+        </div>
+      `;
+      cartItems.appendChild(div);
+    });
+
+    updateSummary();
+  }
+
+  function changeQty(i,val){
+    cart[i].qty += val;
+    if(cart[i].qty<1) cart[i].qty=1;
+    saveCart();
+  }
+
+  function removeItem(i){
+    cart.splice(i,1);
+    saveCart();
+  }
+
+  function saveCart(){
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function updateSummary(){
+    let subtotal=cart.reduce((a,b)=>a+b.price*b.qty,0);
+    let tax=Math.round(subtotal*0.05);
+    let total=subtotal+tax;
+
+    document.getElementById("subtotal").innerText=subtotal;
+    document.getElementById("tax").innerText=tax;
+    document.getElementById("total").innerText=total;
+  }
+
+  function proceedToCheckout() {
+    if (cart.length === 0) {
+      alert("Your cart is empty! Please select dishes from our menu before entering checkout.");
+      return;
+    }
+    window.location.href = "checkout.html";
+  }
+
+  async function syncNavbarAuth() {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session) {
+      const registerLink = document.getElementById('navRegister');
+      const signInLink = document.getElementById('navSignIn');
+      if (registerLink) registerLink.remove();
+      if (signInLink) signInLink.remove();
+
+      // Append functional Logout button
+      const authNavList = document.getElementById('authNavList');
+      const logoutItem = document.createElement('li');
+      logoutItem.className = 'nav-item';
+      logoutItem.innerHTML = `<a class="nav-link active" href="#" id="signOutBtn" style="color: #ff704d; font-weight: 600;">Sign Out 🚪</a>`;
+      authNavList.appendChild(logoutItem);
+
+      // Listen for click execution
+      document.getElementById('signOutBtn').addEventListener('click', async function(e) {
+        e.preventDefault();
+        await supabase.auth.signOut();
+        alert("Signed out successfully.");
+        window.location.reload();
+      });
+    }
+  }
+
+  // Execute on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    renderCart();
+    syncNavbarAuth();
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - Gourmet Delight</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Poppins', sans-serif; background:#fffaf7; color:#333; padding-top: 56px; }
+    .container-main { max-width:1140px; margin:3rem auto 5rem; padding:0 15px; display:grid; grid-template-columns:2fr 1fr; gap:2rem; }
+    h2.section-title { font-size:1.65rem; font-weight:600; color:#ff704d; margin-bottom:1.5rem; position:relative; }
+    h2.section-title::after { content:''; width:50px; height:3px; background:#ffc107; display:block; margin:8px 0 0; border-radius:2px; }
+    .checkout-form, .order-summary { background:#ffffff; padding:2.5rem 2rem; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.04); border: 1px solid #ffe6cc; }
+    .order-summary { height:max-content; }
+    .checkout-form label { display:block; margin:0.8rem 0 0.3rem; font-weight:500; font-size:0.9rem; color:#555; }
+    .checkout-form input, .checkout-form textarea { width:100%; padding:0.75rem 1rem; border:1px solid #ffe6cc; border-radius:12px; font-size:0.95rem; background:#fafafa; outline:none; transition:0.3s; }
+    .form-group { margin-bottom:1.2rem; }
+    .payment-methods { display:flex; gap:1rem; margin-top:1rem; flex-wrap:wrap; }
+    .payment-method { flex:1; min-width:120px; background:#fafafa; padding:1.2rem 1rem; border-radius:16px; border:1px solid #ffe6cc; text-align:center; cursor:pointer; transition:0.3s; }
+    .payment-method.active { border-color:#ff704d; background:#fffaf7; box-shadow:0 8px 20px rgba(255,112,77,0.1); }
+    .summary-item { display:flex; justify-content:space-between; align-items:center; font-size:0.95rem; margin-bottom:0.8rem; border-bottom:1px dashed #ffe6cc; padding-bottom:0.6rem; }
+    .summary-total { display:flex; justify-content:space-between; font-weight:600; font-size:1.3rem; color:#ff704d; border-top:2px dashed #ffe6cc; padding-top:1rem; margin-top:1rem; }
+    .btn-action { width:100%; padding:0.85rem; border:none; border-radius:30px; cursor:pointer; font-weight:600; margin-top:1rem; }
+    .place-order { background:#ffc107; color:#212529; }
+    .generate-pdf { background:#212529; color:white; }
+    footer { background: #212529; color: #fff; padding: 20px 0; text-align: center; }
+    @media(max-width:992px){ .container-main { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container" style="max-width:1140px;">
+        <a class="navbar-brand fw-bold" href="homepage.html">🍽 Gourmet Delight</a>
+    </div>
+</nav>
+
+<div class="container-main">
+    <div class="checkout-form">
+        <h2 class="section-title">Billing & Delivery Info</h2>
+        <form id="billingForm" onsubmit="event.preventDefault();">
+            <div class="form-group"><label>Full Name</label><input type="text" id="name" required></div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="email" required></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="phone" required></div>
+            <div class="form-group"><label>Delivery Address</label><textarea id="address" required></textarea></div>
+            
+            <h3>Payment Method</h3>
+            <div class="payment-methods">
+                <div class="payment-method active" data-method="cod" onclick="setActive(this, 'cod')"><p>Cash on Delivery</p></div>
+                <div class="payment-method" data-method="card" onclick="setActive(this, 'card')"><p>Card Payment</p></div>
+            </div>
+            
+            <button type="button" class="btn-action place-order" onclick="placeOrder()">Place Order</button>
+            <button type="button" class="btn-action generate-pdf" onclick="generateReceipt()">Generate Receipt (PDF)</button>
+        </form>
+    </div>
+
+    <div class="order-summary">
+        <h2 class="section-title">Order Summary</h2>
+        <div id="summaryItems"></div>
+        <div class="summary-total"><span>Total:</span><span id="summaryTotal">₹0</span></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-init.js"></script>
+<script>
+    const { jsPDF } = window.jspdf;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let activePaymentMethod = 'cod';
+
+    function setActive(el, method) {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+        el.classList.add('active');
+        activePaymentMethod = method;
+    }
+
+    async function prefillUserData() {
+        const { data: { session } } = await window.supabase.auth.getSession();
+        if (session) {
+            document.getElementById('email').value = session.user.email;
+            const { data: profile } = await window.supabase.from('profiles').select('full_name, phone').eq('id', session.user.id).single();
+            if (profile) {
+                document.getElementById('name').value = profile.full_name;
+                document.getElementById('phone').value = profile.phone;
+            }
+        }
+    }
+
+    function renderSummary() {
+        const summaryDiv = document.getElementById('summaryItems');
+        let subtotal = 0;
+        cart.forEach(item => {
+            subtotal += (item.price * item.qty);
+            summaryDiv.innerHTML += `<div class="summary-item"><span>${item.name} x${item.qty}</span><span>₹${item.price * item.qty}</span></div>`;
+        });
+        document.getElementById('summaryTotal').innerText = '₹' + (subtotal + Math.round(subtotal * 0.05));
+    }
+
+    // Database logger defined OUTSIDE the receipt function
+    async function logReceiptDownload(userName, orderID) {
+        try {
+            const { error } = await supabase
+                .from('receipt_logs')
+                .insert([{ 
+                    user_name: userName, 
+                    order_id: orderID 
+                }]);
+            if (error) throw error;
+            console.log("Successfully logged receipt download for:", orderID);
+        } catch (err) {
+            console.error("Supabase Logging Error:", err.message);
+        }
+    }
+
+    function generateReceipt() {
+        if (cart.length === 0) { alert("Cart is empty!"); return; }
+
+        const doc = new jsPDF({ unit: 'mm', format: [80, 200] });
+        const name = document.getElementById('name').value || 'Valued Customer';
+        const orderID = "GD-" + Math.floor(10000 + Math.random() * 90000);
+        
+        const getNum = (val) => parseFloat(String(val).replace(/[^0-9.]/g, '')) || 0;
+        let subtotal = cart.reduce((sum, i) => sum + (getNum(i.price) * parseInt(i.qty)), 0);
+        let serviceCharge = subtotal * 0.10;
+        let tax = subtotal * 0.05;
+        let total = subtotal + serviceCharge + tax;
+
+        // --- Header ---
+        doc.setTextColor(255, 112, 77);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text("GOURMET DELIGHT", 40, 15, { align: "center" });
+        
+        doc.setTextColor(50);
+        doc.setFontSize(7);
+        doc.setFont("helvetica", "normal");
+        doc.text("Plot 78, Baner Road, Pune, Maharashtra", 40, 20, { align: "center" });
+        doc.text("+91 91234 56789", 40, 23, { align: "center" });
+        doc.text("contact@flavorsoftheworld.com", 40, 26, { align: "center" });
+        doc.setDrawColor(255, 112, 77);
+        doc.line(10, 29, 70, 29);
+
+        // --- Meta Details ---
+        doc.setFontSize(8);
+        doc.text(`Guest Name: ${name.toUpperCase()}`, 5, 36);
+        doc.text(`Order ID: ${orderID}`, 5, 40);
+        doc.text(`Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`, 5, 44);
+
+        // --- Table ---
+        doc.setFont("helvetica", "bold");
+        doc.text("ITEM", 5, 50);
+        doc.text("QTY", 42, 50);
+        doc.text("PRICE", 75, 50, { align: "right" });
+        doc.setDrawColor(200);
+        doc.line(5, 52, 75, 52);
+
+        let y = 59;
+        doc.setFont("helvetica", "normal");
+        cart.forEach(i => {
+            doc.text(i.name.substring(0, 15), 5, y);
+            doc.text(i.qty.toString(), 45, y);
+            doc.text((getNum(i.price) * i.qty).toFixed(2), 75, y, { align: "right" });
+            y += 6;
+        });
+
+        // --- Summary ---
+        doc.line(5, y + 2, 75, y + 2);
+        y += 8;
+        doc.text("Subtotal:", 5, y); doc.text(subtotal.toFixed(2), 75, y, { align: "right" });
+        y += 5;
+        doc.text("Service (10%):", 5, y); doc.text(serviceCharge.toFixed(2), 75, y, { align: "right" });
+        y += 5;
+        doc.text("Tax (5%):", 5, y); doc.text(tax.toFixed(2), 75, y, { align: "right" });
+        
+        y += 8;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(255, 112, 77);
+        doc.text("TOTAL (INR):", 5, y); doc.text(total.toFixed(2), 75, y, { align: "right" });
+
+        // --- Footer ---
+        doc.setTextColor(80);
+        doc.setFontSize(7);
+        doc.setFont("helvetica", "italic");
+        y += 12;
+        doc.text("Thank you for choosing Gourmet Delight!", 40, y, { align: "center" });
+
+        // Save PDF and Log
+        doc.save(`Receipt_${name.replace(/\s+/g, '_')}.pdf`);
+        logReceiptDownload(name, orderID);
+    }
+
+    async function placeOrder() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const total = parseFloat(document.getElementById('summaryTotal').innerText.replace('₹', ''));
+        
+        const { data: { session } } = await window.supabase.auth.getSession();
+        if (!session) { alert("Please sign in first."); return; }
+
+        const { data: order, error: oErr } = await window.supabase.from('orders').insert([{
+            user_id: session.user.id, customer_name: name, email, phone, delivery_address: address, total_payable: total, payment_method: activePaymentMethod
+        }]).select().single();
+
+        if (oErr) { alert("Order error: " + oErr.message); return; }
+
+        const items = cart.map(i => ({ order_id: order.id, menu_item_name: i.name, price: i.price, qty: i.qty }));
+        await window.supabase.from('order_items').insert(items);
+        
+        localStorage.removeItem('cart');
+        alert("Order placed!");
+        window.location.href = "homepage.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => { renderSummary(); prefillUserData(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Gourmet Delight</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fffaf7; 
+      color: #333;
+      line-height: 1.6;
+      padding-top: 56px; 
+    }
+
+    .navbar .navbar-brand {
+      font-size: 1.25rem;
+    }
+    .navbar .nav-link {
+      font-size: 1rem; 
+      font-weight: 400;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+                  url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+      color: white;
+      height: 55vh; 
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-radius: 0 0 40px 40px; 
+      padding: 2rem;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+    .hero h1 { 
+      font-size: 4rem; 
+      font-weight: 700; 
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+    }
+    .hero p { 
+      font-size: 1.4rem; 
+      margin-top: 10px; 
+      font-style: italic;
+      color: #ffc107; 
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 4rem 0 2.5rem;
+      font-size: 1.65rem; 
+      color: #ff704d; 
+      font-weight: 600;
+    }
+    .section-title::after {
+      content: '';
+      width: 50px;
+      height: 3px;
+      background: #ffc107;
+      display: block;
+      margin: 8px auto 0;
+      border-radius: 2px;
+    }
+
+    .container-main-wrap {
+      max-width: 1140px; 
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    .about-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      background: #fff; 
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+      border: 1px solid #ffe6cc; 
+    }
+
+    .about-section p {
+      font-size: 1.15rem;
+      color: #555555;
+      line-height: 1.8;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .cards, .dishes, .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin: 2rem auto;
+    }
+
+    .chefs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 340px));
+      justify-content: center;
+      gap: 25px;
+      margin: 2rem auto;
+    }
+
+    .card, .chef-card, .dish-card, .interior-card {
+      background: linear-gradient(135deg, #ffffff, #ffeec2); 
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+      border: none;
+      text-align: center;
+    }
+
+    .card:hover, .chef-card:hover, .dish-card:hover, .interior-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card h3, .chef-card h3, .dish-card h3, .interior-card h3 {
+      color: #ff704d;
+      margin: 1.2rem 0 0.5rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .card p, .chef-card p, .dish-card p, .interior-card p {
+      color: #666;
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    .chef-card img {
+      width: 100%;
+      height: 260px;      
+      object-fit: cover;   
+      object-position: top center; 
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); 
+      display: block;
+    }
+
+    .dish-card img, .interior-card img {
+      width: 100%;
+      height: 240px;      
+      object-fit: cover;   
+      clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); 
+      display: block;
+    }
+
+    /* Why Choose Us */
+    .why-us {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      margin: 2rem auto;
+    }
+    .point {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid #ffe6cc;
+    }
+    .point h4 { color: #ff704d; font-weight:700; margin-bottom: 0.8rem; }
+
+    /* CTA */
+    .cta {
+      background: #fff3e6; 
+      text-align: center;
+      padding: 5rem 2rem;
+      margin-top: 5rem;
+    }
+    .cta button {
+      background: #ffc107;
+      color: #212529;
+      padding: 0.85rem 2.5rem;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255,193,7,0.2);
+      transition: 0.3s;
+    }
+    .cta button:hover { 
+      background: #e0a800;
+      transform: translateY(-2px); 
+      box-shadow: 0 6px 15px rgba(224,168,0,0.3);
+    }
+
+    footer {
+      background: #212529;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      width: 100%;
+    }
+    footer p { margin: 0; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar Navigation Component Sync layer -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container-fluid max-width-container mx-auto" style="max-width:1140px;">
+      <a class="navbar-brand fw-bold" href="home.html">🍽 Gourmet Delight</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="homepage.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="aboutus.html">About Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contactus.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart 🛒</a></li>
+          <li class="nav-item"><a class="nav-link active" href="register.html">Register</a></li>
+          <li class="nav-item"><a class="nav-link active" href="signin.html">SignIn</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>About Us</h1>
+    <p>A legacy of taste, crafted with passion.</p>
+  </section>
+
+  <!-- Main Content Wrappers -->
+  <div class="container-main-wrap">
+    <h2 class="section-title">Who We Are</h2>
+    <div class="about-section">
+      <p>At <strong>Gourmet Delight</strong>, we transform dining into a journey. Our multi-cuisine restaurant fuses authentic recipes from Asia, Europe, and beyond, delivering every flavor to your table with creativity and passion.</p>
+    </div>
+
+    <h2 class="section-title">Meet Our Chefs</h2>
+    <div class="chefs">
+      <div class="chef-card">
+        <img src="assets/chef 1.jpeg" alt="Chef Antonio">
+        <h3>Chef Antonio</h3>
+        <p>Expert in Italian cuisine with 15 years of experience.</p>
+      </div>
+      <div class="chef-card">
+        <img src="assets/chef 2.jpeg" alt="Chef Mei">
+        <h3>Chef Mei</h3>
+        <p>Asian cuisine specialist and sushi master.</p>
+      </div>
+      <div class="chef-card">
+        <img src="assets/chef 3.jpeg" alt="Chef Liam">
+        <h3>Chef Liam</h3>
+        <p>Award-winning pastry and dessert artisan.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Signature Dishes</h2>
+    <div class="dishes">
+      <div class="dish-card">
+        <img src="assets/Spaghetti Carbonara.jpeg" alt="Dish 1">
+        <h3>Spaghetti Carbonara</h3>
+        <p>The ultimate Italian comfort food.</p>
+      </div>
+      <div class="dish-card">
+        <img src="assets/sushi.jpeg" alt="Dish 2">
+        <h3>Sushi Platter</h3>
+        <p>Freshly rolled, premium grade seafood.</p>
+      </div>
+      <div class="dish-card">
+        <img src="assets/Chocolate Lava Cake.jpeg" alt="Dish 3">
+        <h3>Lava Cake</h3>
+        <p>Rich, molten, and incredibly decadent.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="cta">
+    <h2>Ready to Taste the World?</h2>
+    <button onclick="window.location.href='menu.html'">Explore Our Menu</button>
+  </section>
+
+  <footer>
+    <p>© 2026 Gourmet Delight | All Rights Reserved</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-init.js"></script></body>
+</html>
